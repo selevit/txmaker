@@ -3,11 +3,14 @@ from typing import Any, Awaitable, Callable, Iterable, List, Type
 
 import aiohttp
 import pytest
+from _pytest.monkeypatch import MonkeyPatch
+from aiohttp import web
 from aiohttp.test_utils import TestClient
 from aiohttp.web import AbstractRouteDef
 from aiohttp.web_app import Application
 from aioresponses import aioresponses
 
+from .bitcoin import is_valid_address
 from .server import make_app
 from .testing import mocks
 
@@ -33,6 +36,22 @@ async def app(loop: AbstractEventLoop) -> Any:
 @pytest.fixture
 async def client(app: Application, aiohttp_client: AIOHTTP_CLIENT_FIXTURE) -> TestClient:
     yield await aiohttp_client(app)
+
+
+@pytest.fixture
+async def mock_unspent_response(fake_server_client_factory: Any, monkeypatch: MonkeyPatch) -> Any:
+    async def mock(mock_response: web.Response) -> None:
+        def mock_handler(request: web.Request) -> web.Response:
+            assert 'active' in request.query
+            assert is_valid_address(request.query['active'])
+
+            return mock_response
+        fake_server_client = await fake_server_client_factory(
+            hosts=['testnet.blockchain.info'],
+            routes=[web.get('/unspent', mock_handler)],
+        )
+        monkeypatch.setattr('aiohttp.ClientSession', fake_server_client)
+    yield mock
 
 
 @pytest.fixture
