@@ -1,5 +1,7 @@
 # Tx Maker
 
+[![Build Status](https://travis-ci.org/selevit/txmaker.svg?branch=master)](https://travis-ci.org/selevit/txmaker)
+
 A service for making unsigned Bitcoin transactions from arbitrary inputs.
 Uses public blockchain.info service for getting available inputs.
 

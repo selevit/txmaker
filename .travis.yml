@@ -8,6 +8,6 @@ install:
   - pipenv install --dev --deploy
 script:
   - make
-  - pytest
+  - pytest --cov .
 after_success:
   - codecov
