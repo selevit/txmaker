@@ -58,3 +58,9 @@ pytest
 
 - `TESTNET` - Use testnet Bitcoin network  (default=`false`)
 - `PORT` - HTTP service port number (default=`8080`)
+
+**Possible improvements**
+
+- More tests for UTXO choosing logic
+- Support pagination in `bitcoin.get_unspent`
+- More transaction checks in tests (e.g. amount matching and adequate fee)
