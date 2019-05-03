@@ -1,0 +1,9 @@
+version: '3.6'
+
+services:
+  txcreator:
+    build: .
+    environment:
+      - TESTNET=false
+    ports:
+      - 8080:8080
