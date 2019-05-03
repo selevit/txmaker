@@ -47,11 +47,11 @@ async def create_transaction(_: web.Request, req_obj: CreateTransactionRequest) 
     try:
         tx_obj, inputs = await create_unsigned_transaction(
             source_address=req_obj.source_address,
-            outputs=cast(Dict[str, Decimal], req_obj.outputs),
+            outputs_dict=cast(Dict[str, Decimal], req_obj.outputs),
             fee_kb=req_obj.fee_kb,
         )
-    except InsufficientFunds:
-        return error_response('insufficient_funds')
+    except InsufficientFunds as e:
+        return error_response('insufficient_funds', str(e))
 
     return json_response({
         'raw': tx_obj.to_hex(),

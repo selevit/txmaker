@@ -74,6 +74,7 @@ async def test_create_if_no_available_utxos(client: TestClient, mock_unspent_res
     assert response.status == 400
     response_data = await response.json()
     assert response_data['error']['code'] == 'insufficient_funds'
+    assert response_data['error']['message'] == 'No confirmed UTXOs were found'
 
 
 async def test_create_if_no_available_confirmed_utxos(client: TestClient, mock_unspent_response: Any) -> None:
@@ -99,6 +100,7 @@ async def test_create_if_no_available_confirmed_utxos(client: TestClient, mock_u
     response_data = await response.json()
     assert response.status == 400
     assert response_data['error']['code'] == 'insufficient_funds'
+    assert response_data['error']['message'] == 'No confirmed UTXOs were found'
 
 
 async def test_create_transaction_if_invalid_source_address(client: TestClient) -> None:
@@ -153,6 +155,7 @@ async def test_create_transaction_if_insufficient_funds(client: TestClient, mock
     assert response.status == 400
     response_data = await response.json()
     assert response_data['error']['code'] == 'insufficient_funds'
+    assert response_data['error']['message'] == 'Balance 13000000 is less than 2000005650 (including fee).'
 
 
 async def test_create_transaction_with_p2sh_input(client: TestClient) -> None:
@@ -216,16 +219,6 @@ async def test_create_transaction_if_no_change(client: TestClient,  mock_unspent
     await mock_unspent_response(web.json_response({
         "unspent_outputs": [
             {
-                "tx_hash": "13e1ce6d1803b46963871e89f768de93fdef7b86e820e1abd70c400dadeb1671",
-                "tx_hash_big_endian": "7116ebad0d400cd7abe120e8867beffd93de68f7891e876369b403186dcee113",
-                "tx_index": 197282181,
-                "tx_output_n": 1,
-                "script": "76a9146efcf883b4b6f9997be9a0600f6c095fe2bd2d9288ac",
-                "value": 45581249,
-                "value_hex": "02b783c1",
-                "confirmations": 163638
-            },
-            {
                 "tx_hash": "d0ecaa87d4629a59480d6b156e646a05010d244455fcb7d87af9ecc052fa0264",
                 "tx_hash_big_endian": "6402fa52c0ecf97ad8b7fc5544240d01056a646e156b0d48599a62d487aaecd0",
                 "tx_index": 197282253,
@@ -240,11 +233,24 @@ async def test_create_transaction_if_no_change(client: TestClient,  mock_unspent
     response = await client.post('/payment_transactions', json={
         "source_address": "mqdofsXHpePPGBFXuwwypAqCcXi48Xhb2f",
         "outputs": {
-            "mhnnkpnCfBkxN5KpfMArye2F376nATVJDW": "0.12976820",
+            "mhnnkpnCfBkxN5KpfMArye2F376nATVJDW": "0.12976851",
         },
         "fee_kb": 2000
     })
+
     assert response.status == 201
+    response_data = await response.json()
+    assert response_data == {
+        'raw': '0200000001d0ecaa87d4629a59480d6b156e646a05010d244455fcb7d87af9ecc052fa02640000000000ffffff'
+               'ff01d302c600000000001976a91418eef1d5d14e8032ca7caacefce7164179320b9388ac00000000',
+        'inputs': [
+            {
+                'txid': '6402fa52c0ecf97ad8b7fc5544240d01056a646e156b0d48599a62d487aaecd0',
+                'vout': 0, 'script_pub_key': '76a9146efcf883b4b6f9997be9a0600f6c095fe2bd2d9288ac',
+                'amount': 12982733
+            }
+        ]
+    }
 
 
 async def test_create_transaction_with_many_inputs(client: TestClient, mock_unspent_response: Any) -> None:

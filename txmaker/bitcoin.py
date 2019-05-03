@@ -11,12 +11,14 @@ from bit.wallet import sanitize_tx_data
 
 from .config import settings
 
+DUST_THRESHOLD = 5430
+
+
+# Wrap bit.Wallet objects into our owns
+# in order to encapsulate all bitcoin abstractions in this module
+
 
 class Unspent(bit.wallet.Unspent):
-    pass
-
-
-class InsufficientFunds(bit.exceptions.InsufficientFunds):
     pass
 
 
@@ -24,25 +26,39 @@ class TxObj(bit.transaction.TxObj):
     pass
 
 
-async def create_unsigned_transaction(source_address: str, outputs: Dict[str, Decimal],
+class InsufficientFunds(bit.exceptions.InsufficientFunds):
+    pass
+
+
+async def create_unsigned_transaction(source_address: str, outputs_dict: Dict[str, Decimal],
                                       fee_kb: int) -> Tuple[TxObj, List[Unspent]]:
     all_utxos = await get_unspent(source_address)
     confirmed_utxos = [u for u in all_utxos if u.confirmations >= settings.min_confirmations]
+
     if not confirmed_utxos:
-        raise InsufficientFunds
+        raise InsufficientFunds('No confirmed UTXOs were found')
 
     try:
         unspents, outputs = sanitize_tx_data(
             confirmed_utxos,
-            [(address, amount, 'btc') for address, amount in outputs.items()],
+            [(address, amount, 'btc') for address, amount in outputs_dict.items()],
             int(fee_kb / 1000),
             source_address,
-            min_change=5461,
+            # if we set min_change=DUST_THRESHOLD then it raises InsufficientFunds
+            # when balance is enough to cover output_amount + fee
+            # but the change is less than min_change
+            min_change=0,
             version=settings.btc_network,
             combine=False,
         )
     except bit.exceptions.InsufficientFunds as e:
-        raise InsufficientFunds from e
+        raise InsufficientFunds(str(e)) from e
+
+    if len(outputs) > len(outputs_dict):
+        # If there is a change in outputs
+        # and it less than DUST_THRESHOLD then include this change into fee
+        if outputs[-1][1] <= DUST_THRESHOLD:
+            del outputs[-1]
 
     version = VERSION_2
     lock_time = LOCK_TIME
