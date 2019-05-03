@@ -20,4 +20,4 @@ fix: isort-fix
 isort-fix:
 	isort -rc .
 
-.PHONY: lint run isort flake8 mypy fix isort-fix
+.PHONY: lint run run-testnet isort flake8 mypy fix isort-fix
