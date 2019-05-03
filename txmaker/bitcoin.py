@@ -14,7 +14,7 @@ from .config import settings
 DUST_THRESHOLD = 5430
 
 
-# Wrap bit.Wallet objects into our owns
+# wrap bit.Wallet objects into our owns
 # in order to encapsulate all bitcoin abstractions in this module
 
 
@@ -56,7 +56,7 @@ async def create_unsigned_transaction(source_address: str, outputs_dict: Dict[st
 
     if len(outputs) > len(outputs_dict):
         # If there is a change in outputs
-        # and it less than DUST_THRESHOLD then include this change into fee
+        # and it's less than DUST_THRESHOLD then include this change into fee
         if outputs[-1][1] <= DUST_THRESHOLD:
             del outputs[-1]
 
