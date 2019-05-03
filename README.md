@@ -4,9 +4,9 @@
 [![codecov](https://codecov.io/gh/selevit/txmaker/branch/master/graph/badge.svg)](https://codecov.io/gh/selevit/txmaker)
 
 A service for making unsigned Bitcoin transactions from arbitrary inputs.
-Uses public blockchain.info service for getting available inputs.
+Uses **blockchain.info** public API for getting available inputs.
 
-Uses Branch-and-Bound coin selection method defined in Erhart's Master's thesis [An Evaluation of Coin Selection Strategies.][1]
+Uses the Branch-and-Bound coin selection method defined in Erhart's Master's thesis [An Evaluation of Coin Selection Strategies.][1]
 
 [1]: http://murch.one/wp-content/uploads/2016/11/erhardt2016coinselection.pdf
 
@@ -32,7 +32,7 @@ curl -X POST \
 }'
 ```
 
-Will be returned a raw unsigned transaction's hex and a list of used inputs.
+A raw unsigned transaction's hex and a list of used inputs will be returned.
 
 
 **Development**
