@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "21d5857830bb0e2db2693f6585e263066ec1c526e1f50af45438f8851a667b9c"
+            "sha256": "567f8f00230f71b94957aa9a52c4a7e755c992ca1df50faa11e7c0f87f764251"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -43,20 +43,6 @@
             ],
             "index": "pypi",
             "version": "==3.5.4"
-        },
-        "aioresponses": {
-            "hashes": [
-                "sha256:46ef0568e0bd9a603665649ae0ee42347525ebb1f8078519f24261b478942146",
-                "sha256:ecc90e59d11cdef8b45753b87bd0a673e5556772fd593707bec78c4b06144f9e"
-            ],
-            "index": "pypi",
-            "version": "==0.6.0"
-        },
-        "apply-defaults": {
-            "hashes": [
-                "sha256:b8c1bc511a0368dabe1af4d80b97186296e25182d7e371d920a9633cf6a2a385"
-            ],
-            "version": "==0.1.1"
         },
         "asn1crypto": {
             "hashes": [
@@ -141,13 +127,6 @@
             ],
             "version": "==3.0.4"
         },
-        "click": {
-            "hashes": [
-                "sha256:29f99fc6125fbc931b758dc053b3114e55c77a6e4c6c3a2674a2dc986016381d",
-                "sha256:f15516df478d5a56180fbf80e68f206010e6d160fc39fa508b65e035fd75130b"
-            ],
-            "version": "==6.7"
-        },
         "coincurve": {
             "hashes": [
                 "sha256:0b814c5b4d3292a5dc96c1590099f5bf4c76d72c5db5f9486159e8d7346d659c",
@@ -212,23 +191,6 @@
                 "sha256:ea8b7f6188e6fa117537c3df7da9fc686d485087abf6ac197f9c46432f7e4a3c"
             ],
             "version": "==2.8"
-        },
-        "jsonrpcclient": {
-            "extras": [
-                "aiohttp"
-            ],
-            "hashes": [
-                "sha256:cf049c14736cab236d388b6207e4f5f0ca6d0a3f3896433263412d5d130678e8"
-            ],
-            "index": "pypi",
-            "version": "==3.3.1"
-        },
-        "jsonschema": {
-            "hashes": [
-                "sha256:000e68abd33c972a5248544925a0cae7d1125f9bf6c58280d37546b946769a08",
-                "sha256:6ff5f3180870836cae40f06fa10419f557208175f13ad7bc26caa77beb1f6e02"
-            ],
-            "version": "==2.6.0"
         },
         "more-itertools": {
             "hashes": [

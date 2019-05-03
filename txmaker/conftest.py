@@ -8,19 +8,12 @@ from aiohttp import web
 from aiohttp.test_utils import TestClient
 from aiohttp.web import AbstractRouteDef
 from aiohttp.web_app import Application
-from aioresponses import aioresponses
 
 from .bitcoin import is_valid_address
 from .server import make_app
 from .testing import mocks
 
 AIOHTTP_CLIENT_FIXTURE = Callable[[Application], Awaitable[TestClient]]
-
-
-@pytest.fixture
-def mock_aioresponse() -> aioresponses:
-    with aioresponses() as m:
-        yield m
 
 
 @pytest.fixture

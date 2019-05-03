@@ -14,8 +14,6 @@ pytest = "*"
 pytest-pythonpath = "*"
 pydantic = "*"
 python-dotenv = "*"
-jsonrpcclient = {extras = ["aiohttp"],version = "*"}
-aioresponses = "*"
 pytest-asyncio = "*"
 pytest-aiohttp = "*"
 pytest-env = "*"
