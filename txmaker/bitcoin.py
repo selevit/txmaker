@@ -59,7 +59,7 @@ def estimate_tx_fee(n_in: int, in_size: int, n_out: int, out_size: int, fee_kb: 
     Calculates estimated transaction fee (in satoshi)
     fee_kb measures in satoshi per 1000 bytes
     """
-    assert fee_kb > MIN_RELAY_FEE
+    assert fee_kb >= MIN_RELAY_FEE
     size = estimate_tx_size(n_in, in_size, n_out, out_size)
     return math.ceil(size * fee_kb * 0.001)
 

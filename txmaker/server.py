@@ -2,9 +2,9 @@ from decimal import Decimal
 from typing import Dict, cast
 
 from aiohttp import web
-from pydantic import BaseModel, ConstrainedDecimal, PositiveInt, constr
+from pydantic import BaseModel, ConstrainedDecimal, conint, constr
 
-from .bitcoin import InsufficientFunds, create_unsigned_transaction, is_valid_address
+from .bitcoin import MIN_RELAY_FEE, InsufficientFunds, create_unsigned_transaction, is_valid_address
 from .config import settings
 from .utils import error_response, json_response, validate_request
 
@@ -19,7 +19,7 @@ class BitcoinAmount(ConstrainedDecimal):
 class CreateTransactionRequest(BaseModel):
     source_address: BitcoinAddress
     outputs: Dict[BitcoinAddress, BitcoinAmount]
-    fee_kb: PositiveInt
+    fee_kb: conint(ge=MIN_RELAY_FEE)  # type: ignore
 
 
 @validate_request(CreateTransactionRequest)

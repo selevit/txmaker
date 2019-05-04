@@ -6,7 +6,7 @@
 A service for making unsigned Bitcoin transactions from arbitrary inputs.
 Uses **blockchain.info** public API for getting available inputs.
 
-Uses the Branch-and-Bound coin selection method defined in Erhart's Master's thesis [An Evaluation of Coin Selection Strategies.][1]
+Uses the FIFO coin selection method defined in Erhart's Master's thesis [An Evaluation of Coin Selection Strategies.][1]
 
 [1]: http://murch.one/wp-content/uploads/2016/11/erhardt2016coinselection.pdf
 
