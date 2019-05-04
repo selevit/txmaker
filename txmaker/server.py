@@ -4,7 +4,7 @@ from typing import Dict, cast
 from aiohttp import web
 from pydantic import BaseModel, ConstrainedDecimal, conint, constr
 
-from .bitcoin import MIN_RELAY_FEE, InsufficientFunds, create_unsigned_transaction, is_valid_address
+from .bitcoin import MIN_OUTPUT_SIZE, MIN_RELAY_FEE, InsufficientFunds, create_unsigned_transaction, is_valid_address
 from .config import settings
 from .utils import error_response, json_response, validate_request
 
@@ -12,7 +12,7 @@ BitcoinAddress: constr = constr(min_length=1, max_length=100)
 
 
 class BitcoinAmount(ConstrainedDecimal):
-    ge = Decimal('0.00000546')
+    ge = MIN_OUTPUT_SIZE
     decimal_places = 8
 
 

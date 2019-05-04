@@ -14,23 +14,7 @@ from .config import settings
 DUST_THRESHOLD = 5430
 SATOSHI_MULTIPLIER = Decimal('1e8')
 MIN_RELAY_FEE = 1000
-
-
-# wrap the bit package's objects into our owns
-# in order to encapsulate all bitcoin abstractions in this module
-class Unspent(bit.wallet.Unspent):
-    pass
-
-
-class TxObj(bit.transaction.TxObj):
-    pass
-
-
-class InsufficientFunds(bit.exceptions.InsufficientFunds):
-    pass
-
-
-Output = Tuple[str, int]
+MIN_OUTPUT_SIZE = Decimal('0.00000546')
 
 
 def estimate_tx_size(n_in: int, in_size: int, n_out: int, out_size: int) -> int:
@@ -47,10 +31,16 @@ def estimate_tx_size(n_in: int, in_size: int, n_out: int, out_size: int) -> int:
 
 
 def calc_in_size(n_in: int) -> int:
+    """
+    Calculate total size (in bytes) of P2PKH inputs of transaction
+    """
     return 148 * n_in
 
 
 def calc_out_size(addresses: List[str]) -> int:
+    """
+    Calculate total size (in bytes) of P2PKH/P2SH outputs of transaction
+    """
     return sum(len(address_to_scriptpubkey(o)) + 9 for o in addresses)
 
 
@@ -64,8 +54,29 @@ def estimate_tx_fee(n_in: int, in_size: int, n_out: int, out_size: int, fee_kb: 
     return math.ceil(size * fee_kb * 0.001)
 
 
+# wrap the bit package's objects into our owns
+# in order to encapsulate all bitcoin abstractions in this module
+class Unspent(bit.wallet.Unspent):
+    pass
+
+
+class TxObj(bit.transaction.TxObj):
+    pass
+
+
+class InsufficientFunds(Exception):
+    pass
+
+
+Output = Tuple[str, int]
+
+
 def select_unspents(source_address: str, unspents: List[Unspent],
                     outputs: List[Output], fee_kb: int) -> Tuple[List[Unspent], int]:
+    """
+    Select unspent outputs for a new transaction's inputs.
+    Uses FIFO selecting method (oldest transactions are used first)
+    """
     out_addresses = []
     out_amount = 0
 
