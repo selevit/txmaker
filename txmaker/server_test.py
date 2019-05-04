@@ -155,7 +155,7 @@ async def test_create_transaction_if_insufficient_funds(client: TestClient, mock
     assert response.status == 400
     response_data = await response.json()
     assert response_data['error']['code'] == 'insufficient_funds'
-    assert response_data['error']['message'] == 'Balance 13000000 is less than 2000005650 (including fee).'
+    assert response_data['error']['message'] == 'Balance 13000000 is less than 2000005650 (including fee)'
 
 
 async def test_create_transaction_with_p2sh_input(client: TestClient) -> None:
