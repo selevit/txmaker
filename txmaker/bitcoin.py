@@ -100,8 +100,7 @@ def select_unspents(source_address: str, unspents: List[Unspent],
         if out_amount + fee <= spending_amount:
             break
     else:
-        balance = sum(u.amount for u in selected_inputs)
-        raise InsufficientFunds(f'Balance {balance} is less than {out_amount+fee} (including fee)')
+        raise InsufficientFunds(f'Balance {spending_amount} is less than {out_amount+fee} (including fee)')
 
     return selected_inputs, spending_amount - (out_amount+fee)
 
