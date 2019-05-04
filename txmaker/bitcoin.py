@@ -98,6 +98,7 @@ async def create_unsigned_transaction(source_address: str, outputs_dict: Dict[st
                                       fee_kb: int) -> Tuple[TxObj, List[Unspent]]:
     all_utxos = await get_unspent(source_address)
     confirmed_utxos = [u for u in all_utxos if u.confirmations >= settings.min_confirmations]
+
     if not confirmed_utxos:
         raise InsufficientFunds('No confirmed UTXOs were found')
 

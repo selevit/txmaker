@@ -12,7 +12,7 @@ BitcoinAddress: constr = constr(min_length=1, max_length=100)
 
 
 class BitcoinAmount(ConstrainedDecimal):
-    gt = Decimal(0)
+    ge = Decimal('0.00000546')
     decimal_places = 8
 
 
