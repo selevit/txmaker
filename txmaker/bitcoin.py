@@ -32,14 +32,14 @@ def estimate_tx_size(n_in: int, in_size: int, n_out: int, out_size: int) -> int:
 
 def calc_in_size(n_in: int) -> int:
     """
-    Calculate total size (in bytes) of P2PKH inputs of transaction
+    Calculate total size (in bytes) of P2PKH inputs
     """
     return 148 * n_in
 
 
 def calc_out_size(addresses: List[str]) -> int:
     """
-    Calculate total size (in bytes) of P2PKH/P2SH outputs of transaction
+    Calculate total size (in bytes) of P2PKH/P2SH outputs
     """
     return sum(len(address_to_scriptpubkey(o)) + 9 for o in addresses)
 
@@ -47,7 +47,7 @@ def calc_out_size(addresses: List[str]) -> int:
 def estimate_tx_fee(n_in: int, in_size: int, n_out: int, out_size: int, fee_kb: int) -> int:
     """
     Calculates estimated transaction fee (in satoshi)
-    fee_kb measures in satoshi per 1000 bytes
+    fee_kb - satoshis per 1000 bytes
     """
     assert fee_kb >= MIN_RELAY_FEE
     size = estimate_tx_size(n_in, in_size, n_out, out_size)
@@ -74,8 +74,9 @@ Output = Tuple[str, int]
 def select_unspents(source_address: str, unspents: List[Unspent],
                     outputs: List[Output], fee_kb: int) -> Tuple[List[Unspent], int]:
     """
-    Select unspent outputs for a new transaction's inputs.
-    Uses FIFO selecting method (oldest transactions are used first)
+    Selects unspent outputs for a new transaction's inputs.
+    Uses FIFO selecting method (oldest transactions are spending first)
+    Returns a list of selected inputs and a change amount in satoshi
     """
     out_addresses = []
     out_amount = 0
