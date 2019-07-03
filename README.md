@@ -54,6 +54,7 @@ make
 pytest
 ```
 
+
 **Supported env variables**
 
 - `TESTNET` - Use testnet Bitcoin network  (default=`false`)
